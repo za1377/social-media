@@ -34,4 +34,9 @@ public class UserService {
         User user = users.stream().filter(predicate).findFirst().orElse(null);
         return user;
     }
+
+    public void deleteById(int id) {
+        Predicate<User> predicate = user -> user.getId() == id;
+        users.removeIf(predicate);
+    }
 }
