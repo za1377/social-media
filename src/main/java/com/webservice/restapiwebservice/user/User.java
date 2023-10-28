@@ -3,14 +3,18 @@ package com.webservice.restapiwebservice.user;
 import com.fasterxml.jackson.annotation.JsonFilter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.webservice.restapiwebservice.post.Post;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Past;
 import jakarta.validation.constraints.Size;
 
 import java.time.LocalDate;
-@JsonFilter("UserBeanFilter")
+import java.util.List;
+
+//@JsonFilter("UserBeanFilter")
 @Entity(name = "user_detail")
 public class User {
     @Id
@@ -21,6 +25,12 @@ public class User {
     private String name;
     @Past(message = "Date should be in past")
     private LocalDate birthDate;
+
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<Post> posts;
+
+
 
     public User() {
 
@@ -43,6 +53,13 @@ public class User {
         this.id = id;
     }
 
+    public List<Post> getPosts() {
+        return posts;
+    }
+
+    public void setPosts(List<Post> posts) {
+        this.posts = posts;
+    }
     public String getName() {
         return name;
     }
