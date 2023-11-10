@@ -73,13 +73,14 @@ public class UserResourceJpa {
     }
 
     @PostMapping("/users")
-    public ResponseEntity<User> createUser(@Valid @RequestBody User user) {
+    public User createUser(@Valid @RequestBody User user) {
 
         User savedUser = userService.save(user);
-        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
-                .path("/{id}").buildAndExpand(savedUser.getId()).toUri();
-
-        return ResponseEntity.created(location).build();
+//        URI location = ServletUriComponentsBuilder.fromCurrentRequest()
+//                .path("/{id}").buildAndExpand(savedUser.getId()).toUri();
+//
+//        return ResponseEntity.created(location).build();
+        return savedUser;
     }
 
     @PostMapping("/users/{id}/posts")
@@ -117,5 +118,15 @@ public class UserResourceJpa {
     @DeleteMapping("/users/{id}")
     public void deleteUser(@PathVariable int id){
         userService.deleteById(id);
+    }
+
+    @PutMapping("/users/{id}")
+    public User updateUser(@PathVariable int id, @Valid @RequestBody User user) {
+
+        User userUpdate = userService.findById(id).get();
+        userUpdate.setName(user.getName());
+        userUpdate.setBirthDate(user.getBirthDate());
+        userService.save(userUpdate);
+        return userUpdate;
     }
 }
