@@ -48,18 +48,18 @@ public class UserResourceJpa {
     }
 
     @GetMapping("/users/{id}")
-    public EntityModel<User> findUser(@PathVariable int id){
-        Optional<User> user = userService.findById(id);
+    public User findUser(@PathVariable int id){
+        User user = userService.findById(id).get();
 
-        if(user.isEmpty())
-            throw new UserNOtFoundException("id: " + id);
+//        if(user.isEmpty())
+//            throw new UserNOtFoundException("id: " + id);
 
-        EntityModel<User> entityModel = EntityModel.of(user.get());
+//        EntityModel<User> entityModel = EntityModel.of(user.get());
+//
+//        WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
+//        entityModel.add(link.withRel("all-users"));
 
-        WebMvcLinkBuilder link = linkTo(methodOn(this.getClass()).retrieveAllUsers());
-        entityModel.add(link.withRel("all-users"));
-
-        return entityModel;
+        return user;
     }
 
     @GetMapping("/users/{id}/posts")

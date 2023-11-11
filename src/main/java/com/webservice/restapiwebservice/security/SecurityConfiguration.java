@@ -13,31 +13,20 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.servlet.util.matcher.MvcRequestMatcher;
 import org.springframework.web.servlet.handler.HandlerMappingIntrospector;
 
-@Configuration
+//@Configuration
 public class SecurityConfiguration {
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http, HandlerMappingIntrospector introspector) throws Exception{
-//        return http.authorizeHttpRequests((auth) -> auth
-//                        .requestMatchers(HttpMethod.OPTIONS, "/**")
-//                        .permitAll()
-//                .anyRequest().authenticated())
-//                .httpBasic(withDefaults())
-//                        .sessionManagement(
-//                                session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-//
-//                .csrf().disable().build();
-
         MvcRequestMatcher.Builder mvcRequestMatcher = new MvcRequestMatcher.Builder(introspector);
 
         http.csrf(csrf -> csrf
                         .ignoringRequestMatchers(toH2Console()).disable())
 
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers(toH2Console()).permitAll()
-//                        .requestMatchers(mvcRequestMatcher.pattern("/**")).permitAll()
-                        .requestMatchers(mvcRequestMatcher.pattern(HttpMethod.OPTIONS, "/**")).permitAll()
-                        .anyRequest().authenticated()
+                                .requestMatchers(toH2Console()).permitAll()
+                                .requestMatchers(mvcRequestMatcher.pattern(HttpMethod.OPTIONS, "/**")).permitAll()
+                                .anyRequest().authenticated()
                 );
 
         http.headers(headers -> headers.frameOptions((frameOptions) -> frameOptions.disable()));
